@@ -4,7 +4,8 @@
 #include "MdSpi.h"
 #include "TraderSpi.h"
 #include <thread>
-
+#include <iostream>
+using namespace std;
 // api对象
 CThostFtdcMdApi* pUserApi;
 CThostFtdcTraderApi* pTraderApi;
@@ -58,21 +59,31 @@ void tradeThread()
 	pTraderApi->Release();
 }
 
-int main(void)
+void quoteThead()
 {
-
 	// 初始化UserApi
 	pUserApi = CThostFtdcMdApi::CreateFtdcMdApi();			// 创建UserApi
 	CThostFtdcMdSpi* pUserSpi = new CMdSpi();
 	pUserApi->RegisterSpi(pUserSpi);						// 注册事件类
 	pUserApi->RegisterFront(FRONT_ADDR_quote);					// connect
 	pUserApi->Init();
-
 	pUserApi->Join();
-	//todo: 需要另外起一条线程来下单
-	std::thread t(tradeThread);
-	t.join();
+}
+int main(void)
+{
+	cout << "quote thread started......" << endl << endl;
+	std::thread QuoteT(quoteThead);
+	QuoteT.detach();
 
+	
+	//todo: 需要另外起一条线程来下单
+	cout << "trade thead started......" << endl << endl;
+	std::thread TradeT(tradeThread);
+	TradeT.detach();
+
+	cout << "all threads have been started and will release themselves!" << endl;
+
+	getchar();
 	//	pUserApi->Release();
 	return 0;
 }

@@ -254,6 +254,13 @@ void CTraderSpi::ReqOrderInsert()
 	cerr << "trade---->>> 报单录入请求: " << iResult << ((iResult == 0) ? ", 成功" : ", 失败") << endl;
 }
 
+
+////获得下单汇报
+//void CTraderSpi::OnRtnOrder(CThostFtdcOrderField *pOrder)
+//{
+//
+//}
+
 //执行宣告录入请求
 void CTraderSpi::ReqExecOrderInsert()
 {
@@ -571,7 +578,7 @@ void CTraderSpi::OnFrontDisconnected(int nReason)
 {
 	cerr << "trade---->>> " << "OnFrontDisconnected" << endl;
 	cerr << "trade---->>> Reason = " << nReason << endl;
-}
+ }
 
 void CTraderSpi::OnHeartBeatWarning(int nTimeLapse)
 {
